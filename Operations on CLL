@@ -4,7 +4,7 @@
 struct Node {
     int data;
     struct Node *next;
-}*head=NULL;
+}*head=NULL, *first=NULL;
 
 void create(int arr[], int size) {
     struct Node *t, *tail;
@@ -24,6 +24,15 @@ void create(int arr[], int size) {
 
 void display(struct Node *p) {
     while(p->next!=head) {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+    printf("%d\n", p->data);
+}
+
+
+void display1(struct Node *p) {
+    while(p->next!=first) {
         printf("%d ", p->data);
         p=p->next;
     }
@@ -80,6 +89,7 @@ void delete(struct Node *p, int position) {
     int k=0;
     while(tail->next!=head)
         tail=tail->next;
+
     if(position==0) {
         temp=head;
         head=head->next;
@@ -127,6 +137,42 @@ void reverse() {
         tail->next=head;
 }
 
+void copy() {
+    struct Node *t, *last, *temp, *tail;
+    temp=head;
+    tail=head;
+    while(tail->next!=head)
+        tail=tail->next;
+    first=(struct Node *)malloc(sizeof(struct Node));
+    first->data=head->data;
+    first->next=NULL;
+    last=first;
+    temp=temp->next;
+    while(temp!=head) {
+        t=(struct Node *)malloc(sizeof(struct Node));
+        t->data=temp->data;
+        t->next=NULL;
+        last->next=t;
+        last=t;
+        temp=temp->next;
+    }
+     last->next=first;
+}
+
+void delete_list(struct Node *p) {
+    struct Node *temp, *tail=head;
+    while(tail->next!=head)
+        tail=tail->next;
+
+    while(p!=tail) {
+        temp=p;
+        p=p->next;
+        free(temp);
+        head=p;
+    tail->next=head;
+    }
+    free(p);
+}
 
 
 void main() {
@@ -145,9 +191,11 @@ void main() {
     printf("After deletion of element: ");
     display(head);
     printf("Element found at: %d\n", search(head, 8));
-
     printf("List after reversing: ");
     reverse();
     display(head);
-
+    copy();
+    display1(first);
+    delete_list(head);
+    display(head);
 }
