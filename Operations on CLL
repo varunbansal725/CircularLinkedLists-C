@@ -28,6 +28,16 @@ void display(struct Node *p) {
         p=p->next;
     }
     printf("%d\n", p->data);
+}
+
+int count(struct Node *p) {
+    int k;
+    while(p->next!=head) {
+        k++;
+        p=p->next;
+    }
+    k++;
+        return k;
     }
 
 void verify_circular_list(struct Node *p) {
@@ -36,10 +46,72 @@ void verify_circular_list(struct Node *p) {
         tail=tail->next;
 
     if(tail->next==head)
-        printf("The list is a circular linked list");
+        printf("The list is a circular linked list\n");
     else
-        printf("The list is not a circular linked list");
+        printf("The list is not a circular linked list\n");
 }
+
+void insert(struct Node *p, int position, int element) {
+    struct Node *t, *tail=head;
+    if(position > 0 && position <= 10) {
+    t=(struct Node *)malloc(sizeof(struct Node));
+    t->data=element;
+    t->next=NULL;
+    while(tail->next!=head)
+        tail=tail->next;
+    if(position==0) {
+        t->next=head;
+        head=t;
+        tail->next=head;
+    }
+    else {
+        for(int i=0; i < position-1; i++)
+            p=p->next;
+            t->next=p->next;
+            p->next=t;
+    }
+    }
+    else
+        printf("Position not defined\n");
+}
+
+void delete(struct Node *p, int position) {
+    struct Node *temp, *tail=head;
+    int k=0;
+    while(tail->next!=head)
+        tail=tail->next;
+    if(position==0) {
+        temp=head;
+        head=head->next;
+        tail->next=head;
+        free(temp);
+    }
+    else {
+
+    while(p->next!=head && k < position-1) {
+        k++;
+        temp=p;
+        p=p->next;
+    }
+    temp->next=p->next;
+    free(p);
+    p=temp->next;
+}
+}
+
+int search(struct Node *p, int element) {
+    int i=0;
+    while(p->next!=head) {
+    if(p->data==element)
+        return i;
+    else
+        i++;
+        p=p->next;
+    }
+}
+
+
+
 
 void main() {
     int size;
@@ -47,5 +119,15 @@ void main() {
     size = sizeof(A) / sizeof(A[0]);
     create(A, size);
     display(head);
+    printf("List is of length: %d\n", count(head));
     verify_circular_list(head);
+    printf("After element insertion: ");
+    insert(head, 10, 5);
+    display(head);
+    printf("List is of length: %d \n", count(head));
+    delete(head, 11);
+    printf("After deletion of element: ");
+    display(head);
+    printf("Element found at: %d\n", search(head, 8));
+
 }
