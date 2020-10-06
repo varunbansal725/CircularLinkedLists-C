@@ -39,6 +39,15 @@ void display1(struct Node *p) {
     printf("%d\n", p->data);
 }
 
+void display1(struct Node *p) {
+    while(p->next!=third) {
+        printf("%d ", p->data);
+        p=p->next;
+    }
+    printf("%d\n", p->data);
+}
+
+
 int count(struct Node *p) {
     int k;
     while(p->next!=head) {
